@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,7 +18,9 @@ import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pageObject.AddNewCustomer;
 import pageObject.AdminPage;
+import pageObject.Vendor;
 import utilities.ReadConfig;
 
 public class StepDefination extends Base{
@@ -61,16 +64,16 @@ public class StepDefination extends Base{
 	@When("User enter email as {string} and password as {string}")
 	public void user_enter_email_as_and_password_as(String email, String password) throws Exception {
 		ad.setUsername(email);
-		Thread.sleep(9000);
+		Thread.sleep(6000);
 		ad.setPassword(password);
-		Thread.sleep(9000);
+		Thread.sleep(6000);
 	    
 	}
 
 	@When("user click on login button")
 	public void user_click_on_login_button() throws Exception {
 	   ad.clickOnLogin();
-	   Thread.sleep(9000);
+	   Thread.sleep(6000);
 	}
 
 	@Then("user verify page title should be {string}")
@@ -80,7 +83,95 @@ public class StepDefination extends Base{
 		Thread.sleep(4000);
 	    
 	}
+	//--------------------------------------------------------------------------Customer
+	@Then("User can view Dashboard")
+	public void user_can_view_dashboard() throws Exception {
+	    addCust=new AddNewCustomer(driver);
+	    Assert.assertEquals(addCust.getPageTitle(), "Dashboard / nopCommerce administration");
+	    Thread.sleep(4000);
+	}
 
+	@When("user click on customers menu")
+	public void user_click_on_customers_menu() throws Exception {
+	    addCust.clickOnCustomersMenu();
+	    Thread.sleep(4000);
+	}
+
+	@When("User click on customers menu item")
+	public void user_click_on_customers_menu_item() throws Exception {
+	    addCust.clickOnCustomersMenuItem();
+	    Thread.sleep(4000);
+	}
+
+	@When("User click on new add button")
+	public void user_click_on_new_add_button() throws Exception {
+	    addCust.clickOnAddNew();
+	    Thread.sleep(4000);
+	}
+	
+	@Then("User can view add new customer page")
+	public void user_can_view_add_new_customer_page() throws Exception {
+		Thread.sleep(4000);
+		Assert.assertEquals(addCust.getPageTitle(), "Add a new customer / nopCommerce administration");
+	}
+
+	@When("user enter customer info as {string} and {string} and {string} and {string} and {string} and {string} and {string}")
+	public void user_enter_customer_info_as_and_and_and_and_and_and(String newEmail,String password, String firstName, String lastName, String gender, String adminComment,String compName) throws Exception {
+	    addCust.setEmail(newEmail);
+	    addCust.setPassword(password);
+	    addCust.setFirstName(firstName);
+		  addCust.setLastName(lastName);
+		  addCust.setGender(gender);
+		//  addCust.enterDob("6/13/1988");
+		//  addCust.enterManagerofVendor("Vendor 1");
+		  addCust.setCompany(compName);
+		  addCust.setAdminContent(adminComment);
+		  Thread.sleep(4000);
+	}
+
+	@When("user click on save button")
+	public void user_click_on_save_button() throws Exception {
+	    addCust.clickOnSave();
+	    Thread.sleep(6000);
+	}
+
+	@Then("User can view confirmation msg {string}")
+	public void user_can_view_confirmation_msg(String string) throws Exception {
+	   // Assert.assertTrue(driver.findElement(By.tagName("body")).getText().contains(" The new customer has been added successfully."));
+	    Assert.assertEquals(addCust.getPageTitle(), "Customers / nopCommerce administration");
+		Thread.sleep(2000);
+	}
+//-----------------------------------------------------------------Vendor
+	
+	@When("User click on vendor item")
+	public void user_click_on_vendor_item() throws Exception {
+		vdr=new Vendor(driver);
+		vdr.clickOnVendors();
+		Thread.sleep(4000);
+	   
+	}
+
+	@Then("User can view vendor page")
+	public void user_can_view_vendor_page() throws Exception {
+	    Assert.assertEquals("Vendors / nopCommerce administration", vdr.getPageTitle());
+	    Thread.sleep(4000);
+	}
+
+	@When("User enter Vendor name as {string} and password as {string}")
+	public void user_enter_vendor_name_as_and_password_as(String venName, String venEmail) throws Exception {
+	    vdr.searchName(venName);
+	    Thread.sleep(4000);
+	    vdr.searchEmail(venEmail);
+	    Thread.sleep(4000);
+	}
+
+	@When("User click on Search button")
+	public void user_click_on_search_button() throws Exception {
+		vdr.clickOnSearchbutton();
+		Thread.sleep(4000);
+	    
+	}
+	
 	@Then("close browser")
 	public void close_browser() {
 	   driver.close();

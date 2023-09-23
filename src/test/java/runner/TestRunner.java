@@ -7,12 +7,12 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features=".//Features/Admin.feature",
+		features=".//Features/Vendors.feature",
 		glue="stepDefinations",
 		dryRun = false,
 		monochrome=true,
-		publish=true,
-		tags="@Smoke"
+		publish=true
+		//tags="@Smoke"
 		
 		)
 public class TestRunner {
